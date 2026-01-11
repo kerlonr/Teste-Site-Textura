@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JuhCanary - Textura para Rede Canary</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset e configurações gerais */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #f1c40f;
+      --light-color: #f8f9fa;
+      --dark-color: #2c3e50;
+      --gray-color: #7f8c8d;
+      --text-color: #333;
+      --light-bg: #f5f7fa;
+      --transition: all 0.3s ease;
+    }
+    
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header e Navegação */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      color: var(--accent-color);
+      font-size: 28px;
+    }
+    
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-color);
+      letter-spacing: -0.5px;
+    }
+    
+    .logo span {
+      color: var(--secondary-color);
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    
+    nav a {
+      font-weight: 500;
+      color: var(--dark-color);
+      padding: 8px 0;
+      position: relative;
+    }
+    
+    nav a:hover {
+      color: var(--secondary-color);
+    }
+    
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--secondary-color);
+      transition: var(--transition);
+    }
+    
+    nav a:hover::after {
+      width: 100%;
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+    
+    /* Conteúdo principal */
+    main {
+      flex: 1;
+      padding: 60px 0;
+    }
+    
+    /* Seção de apresentação */
+    .hero {
+      text-align: center;
+      padding: 60px 0;
+      margin-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(241, 196, 15, 0.05) 100%);
+      z-index: -1;
+    }
+    
+    .hero h2 {
+      font-size: 2.8rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      line-height: 1.2;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero h2 span {
+      color: var(--secondary-color);
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--gray-color);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+      color: white;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+      background: linear-gradient(135deg, #2980b9, var(--secondary-color));
+    }
+    
+    .cta-button i {
+      margin-left: 8px;
+    }
+    
+    /* Seção sobre */
+    .about-section {
+      background-color: white;
+      border-radius: 12px;
+      padding: 50px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 60px;
+      text-align: center;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      position: relative;
+      padding-bottom: 15px;
+      display: inline-block;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background-color: var(--accent-color);
+      border-radius: 2px;
+    }
+    
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .about-content p {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      color: var(--text-color);
+      line-height: 1.7;
+    }
+    
+    .features {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .feature {
+      background-color: var(--light-bg);
+      padding: 25px;
+      border-radius: 8px;
+      text-align: center;
+      transition: var(--transition);
+      flex: 1;
+      min-width: 250px;
+      max-width: 300px;
+    }
+    
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .feature i {
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+    
+    .feature h4 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+    
+    /* Seção de visualização da textura */
+    .texture-preview {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .texture-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    
+    .texture-sample {
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+      width: 100%;
+      max-width: 450px;
+    }
+    
+    .texture-sample:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .texture-img {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 700;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .texture-img::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+    
+    .texture-img span {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+    
+    .lite-version .texture-img {
+      background: linear-gradient(45deg, #3498db, #2ecc71);
+    }
+    
+    .standard-version .texture-img {
+      background: linear-gradient(45deg, #9b59b6, #e74c3c);
+    }
+    
+    .texture-info {
+      padding: 25px;
+    }
+    
+    .texture-info h4 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    
+    .texture-info p {
+      color: var(--gray-color);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .version-tag {
+      display: inline-block;
+      background-color: var(--accent-color);
+      color: var(--primary-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    
+    .version-badges {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .version-badge {
+      background-color: var(--light-bg);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      color: var(--gray-color);
+      font-weight: 500;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .footer-logo h3 {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    
+    .footer-logo span {
+      color: var(--accent-color);
+    }
+    
+    .copyright {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+    
+    .social-link:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-3px);
+    }
+    
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .hero h2 {
+        font-size: 2.2rem;
+      }
+      
+      .about-section {
+        padding: 40px 30px;
+      }
+      
+      .texture-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .texture-sample {
+        max-width: 550px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        padding: 15px 0;
+      }
+      
+      nav ul {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        gap: 0;
+      }
+      
+      nav ul.active {
+        display: flex;
+      }
+      
+      nav li {
+        width: 100%;
+      }
+      
+      nav a {
+        display: block;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      
+      nav a:last-child {
+        border-bottom: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero {
+        padding: 40px 0;
+      }
+      
+      .hero h2 {
+        font-size: 1.8rem;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .texture-img {
+        height: 180px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero h2 {
+        font-size: 1.5rem;
+      }
+      
+      .cta-button {
+        padding: 14px 30px;
+      }
+      
+      .about-section {
+        padding: 30px 20px;
+      }
+      
+      .section-title {
+        font-size: 1.6rem;
+      }
+      
+      .feature {
+        min-width: 100%;
+      }
+      
+      .texture-info {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-feather-alt"></i>
+        </div>
+        <h1>Juh<span>Canary</span></h1>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav>
+        <ul id="mainMenu">
+          <li><a href="index.php"><i class="fas fa-home"></i> Página Inicial</a></li>
+          <li><a href="download.php"><i class="fas fa-download"></i> Download</a></li>
+          <li><a href="feedback.php"><i class="fas fa-comment-alt"></i> Feedback</a></li>
+          <li><a href="redessociais.php"><i class="fas fa-users"></i> Redes Sociais</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <main>
+    <div class="container">
+      <section class="hero">
+        <h2>Textura <span>JuhCanary</span> para a Rede Canary</h2>
+        <p>Uma textura cuidadosamente desenvolvida que combina estilo e funcionalidade para melhorar sua experiência no Minecraft. Totalmente compatível e altamente personalizável.</p>
+        <a href="download.php" class="cta-button">
+          Ver Versões Disponíveis <i class="fas fa-arrow-right"></i>
+        </a>
+      </section>
+      
+      <section class="about-section">
+        <h3 class="section-title">Sobre a Textura JuhCanary</h3>
+        <div class="about-content">
+          <p>A textura JuhCanary não é completamente oficial da Rede Canary, porém é a mais divulgada, conhecida no servidor tanto no Discord como no Minecraft e tem apoio oficial.</p>
+          <p>A base da textura é da antiga Rede Sky, mas fizemos o possível para torná-la nossa, com melhorias visuais, otimização de performance e elementos exclusivos da Rede Canary.</p>
+        </div>
+        
+        <div class="features">
+          <div class="feature">
+            <i class="fas fa-palette"></i>
+            <h4>Design Atualizado</h4>
+            <p>Interface moderna e elementos visuais aprimorados para uma experiência imersiva.</p>
+          </div>
+          
+          <div class="feature">
+            <i class="fas fa-tachometer-alt"></i>
+            <h4>Otimizada</h4>
+            <p>Texturas leves que não comprometem o desempenho do seu jogo.</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="texture-preview">
+        <h3 class="section-title">Versões Disponíveis</h3>
+        <p>Escolha a versão que melhor se adapta ao seu estilo de jogo e hardware.</p>
+        
+        <div class="texture-container">
+          <!-- Versão Lite -->
+          <div class="texture-sample lite-version">
+            <div class="texture-img">
+              <span>JuhCanary Lite</span>
+            </div>
+            <div class="texture-info">
+              <h4>Versão Lite</h4>
+              <p>Texturas otimizadas para máximo desempenho em computadores com configurações modestas. Ideal para quem prioriza a fluidez do jogo sem abrir mão de uma experiência visual agradável.</p>
+              <span class="version-tag">v2.1.3</span>
+              <div class="version-badges">
+                <span class="version-badge"><i class="fas fa-bolt"></i> Desempenho Máximo</span>
+                <span class="version-badge"><i class="fas fa-laptop"></i> Low-end</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Versão Standard -->
+          <div class="texture-sample standard-version">
+            <div class="texture-img">
+              <span>JuhCanary Standard</span>
+            </div>
+            <div class="texture-info">
+              <h4>Versão Standard</h4>
+              <p>Balanço perfeito entre qualidade visual e desempenho. Recomendada para a maioria dos jogadores que buscam uma experiência completa sem comprometer a performance.</p>
+              <span class="version-tag">v2.5.0</span>
+              <div class="version-badges">
+                <span class="version-badge"><i class="fas fa-balance-scale"></i> Equilíbrio Perfeito</span>
+                <span class="version-badge"><i class="fas fa-star"></i> Mais Popular</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-logo">
+        <h3>Juh<span>Canary</span></h3>
+        <p>Textura para Rede Canary</p>
+      </div>
+      
+      <div class="copyright">
+        <p>© 2026 JuhCanary - Julia Garcia</p>
+        <p>Não afiliado à Mojang Studios. Minecraft é uma marca registrada da Mojang.</p>
+      </div>
+      
+      <div class="social-links">
+        <a href="redessociais.php" class="social-link">
+          <i class="fab fa-discord"></i>
+        </a>
+        <a href="redessociais.php" class="social-link">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="redessociais.php" class="social-link">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    // Menu móvel
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mainMenu = document.getElementById('mainMenu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mainMenu.classList.toggle('active');
+      
+      // Alterar ícone do botão
+      const icon = mobileMenuBtn.querySelector('i');
+      if (mainMenu.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+    
+    // Fechar menu ao clicar em um link (para dispositivos móveis)
+    const menuLinks = document.querySelectorAll('nav a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (mainMenu.classList.contains('active')) {
+          mainMenu.classList.remove('active');
+          const icon = mobileMenuBtn.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    });
+    
+    // Efeito de rolagem suave para links âncora
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Adicionar efeito de destaque aos cards ao passar o mouse
+    const textureSamples = document.querySelectorAll('.texture-sample');
+    textureSamples.forEach(sample => {
+      sample.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px)';
+      });
+      
+      sample.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body>
+</html>
